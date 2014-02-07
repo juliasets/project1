@@ -10,4 +10,5 @@ public class SubJob extends Job{
 	}
 	
 	public String getId() { return masterId;}
+	public String getSubId() { return id;}
 }
