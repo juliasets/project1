@@ -1,0 +1,12 @@
+
+# ignore metadata stuff
+.metadata
+
+# ignore jar stuff
+*.jar
+
+# ignore manifest stuff
+*.MF
+
+# ignore org.eclipse stuff
+org.eclipse.*
