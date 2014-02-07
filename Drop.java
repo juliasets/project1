@@ -33,6 +33,49 @@ public class Drop{
         notifyAll();
 	}
 	
+	public synchronized Job claim()
+	{
+		while (this.unclaimed.size() == 0) {
+            try { 
+                wait();
+            } catch (InterruptedException e) {}
+        }
+        
+        Job j = unclaimed.remove(0);
+        String id;
+        if (j instanceof SubJob)
+        {
+        	id = j.getSubId();
+        }
+        else
+        {
+        	id = j.getId();
+        }
+        
+        claimed.put(id, j);
+        return j;
+	}
+	
+	public synchronized void finish(Job j)
+	{
+		String id;
+        if (j instanceof SubJob)
+        {
+        	id = j.getSubId();
+        }
+        else
+        {
+        	id = j.getId();
+        }
+        
+        claimed.remove(id);
+	}
+	
+	public synchronized void putData(Job j, int[][] data)
+	{
+	
+	}
+	
 	public synchronized register()
 	{
 		nProducers++;
