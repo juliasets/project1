@@ -71,7 +71,7 @@ public class Drop{
         claimed.remove(id);
 	}
 	
-	public synchronized void putData(Job j, )
+	public synchronized void putData(Job j, int[][] data)
 	{
 	
 	}
