@@ -1,4 +1,4 @@
-package project1
+package project1;
 
 public class SubJob extends Job{
 	private String masterId;

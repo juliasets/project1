@@ -1,4 +1,4 @@
-package project1
+package project1;
 
 public class Job{
 	private double c;
