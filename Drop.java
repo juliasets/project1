@@ -15,7 +15,7 @@ public class Drop{
 		
 		claimed = new Hashtable<String, Job>();
 		
-		outputs = new Hashtable<String, ***>();
+		outputs = new Hashtable<String, Output>();
 	}
 	
 	public synchronized void put(Job j)
@@ -29,6 +29,12 @@ public class Drop{
         //allow Producers to unregister
         
         this.unclaimed.add(j);
+        
+        if (!(j instanceof SubJob))
+        {
+        	Output out = new Output(j);
+        	outputs.put(j.getId(), out);
+        }
         
         notifyAll();
 	}
@@ -73,7 +79,29 @@ public class Drop{
 	
 	public synchronized void putData(Job j, int[][] data)
 	{
+		Output out = outputs.get(j.getId());
+		if (out == NULL)
+			return;
+		
+		out.insertData(j, data);
+	}
 	
+	public synchronized int[][] getData(Job j)
+	{
+		Output out = outputs.get(j.getId());
+		if (out == NULL)
+			return;
+			
+		while (!(out.isFull())) {
+            try { 
+                wait();
+            } catch (InterruptedException e) {}
+        }
+			
+		int[][] data = out.getData();
+		outputs.remove(j.getId()); //not sure if this leaves data in tact
+		
+		return data;
 	}
 	
 	public synchronized register()

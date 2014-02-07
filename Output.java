@@ -12,7 +12,7 @@ public class Output{
 	private double resolution;
 	private boolean full;
 	
-	public output(Job j)
+	public Output(Job j)
 	{
 		xmin = j.getXmin;
 		xmax = j.getXmax;
@@ -43,6 +43,15 @@ public class Output{
 		if ((xOff + width) || (yOff + width))
 			return;
 		
+		for (int row = 0; row < width; row++)
+		{
+			for (int col = 0; col < height; col++)
+			{
+				this.data[xOff + row][yOff + col] = data[row][col];
+				set[xOff + row][yOff + col] = true;
+			}
+		}
+		
 		for (int row = 0; row < set.length; row++)
 		{
 			for (int col = 0; col < set[row].length; col++)
@@ -54,6 +63,8 @@ public class Output{
 			if (full)
 				break;
 		}
+		if (full)
+			notifyAll();
 	}
 	
 	public boolean isFull()
