@@ -18,7 +18,7 @@ public class Job{
 		this.ymin = ymin;
 		this.ymax = ymax;
 		this.resolution = resolution;
-		this.id = String.format("%f-%f-%f-%f-%f-%f", c, resolution, xmin, xmax, ymin, ymax);
+		this.id = String.format("%f-%f-%f-%f-%f-%f-%d", c, resolution, xmin, xmax, ymin, ymax, ThreadLocalRandom.current().nextInt(0, 65536));
 		//this.shortid = String.format("%f-%f", c, resolution);
 	}
 	
