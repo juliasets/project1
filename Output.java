@@ -40,7 +40,7 @@ public class Output{
 		int width = Math.ceil((j.getXmax - j.getXmin)*resolution);
 		int height = Math.ceil((j.getYmax - j.getYmin)*resolution);
 		
-		if ((xOff + width) || (yOff + width))
+		if (((xOff + width) > set.length) || ((yOff + width) > set[0].length))
 			return;
 		
 		for (int row = 0; row < width; row++)
