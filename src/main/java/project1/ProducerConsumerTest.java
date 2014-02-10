@@ -15,13 +15,13 @@ public class ProducerConsumerTest {
         Producer p1 = new Producer(d, dp);
 	int cores = Runtime.getRuntime().availableProcessors();
 	ArrayList<Consumer> consumers;
-	for (int i = 1; i <= cores; ++i)
+	for (int i = 0; i < cores; ++i) // All but one core for the producer.
 	    {
 		Consumer c = new Consumer(d, i);
 		consumers.add(c);
 	    }
         p1.start();
-	for (int i = 0; i < cores; ++i)
+	for (int i = 0; i < consumers.size(); ++i)
 	    {
 		consumers.get(i).start();
 	    }
