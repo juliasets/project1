@@ -27,7 +27,7 @@ public class Consumer extends Thread {
 		//only handles single job
 		//need to loop and check if claimed and unclaimed empty before closing thread
 		Job j;
-		while ((j=drop.claim())!=NULL)
+		while ((j=drop.claim())!= null)
 		{
 			//check size of job
 			double jc = j.getC();
@@ -36,14 +36,14 @@ public class Consumer extends Thread {
 			double jymax = j.getYmax();
 			double jymin = j.getYmin();
 			double jres = j.getRes();
-			int xrange = ceil((jxmax-jxmin)*jres);
-			int yrange = ceil(jymax-jymin*jres);
+			int xrange = (int)Math.ceil((jxmax-jxmin)*jres);
+			int yrange = (int)Math.ceil(jymax-jymin*jres);
 			int size = xrange*yrange;
 			//job too big
 			if (size > mlimit && yrange > 1) {
 				//break into subjobs
-				int subs = Math.ceil(yrange/ylimit); //number of new subjobs
-				int lines = Math.floor(yrange/subs); //max number of lines per sub
+				int subs = (int)Math.ceil(yrange/ylimit); //number of new subjobs
+				int lines = (int)Math.floor(yrange/subs); //max number of lines per sub
 				double cap = jymax; //max jymax for subjobs
 				for (int dex = 0; dex < subs; dex = dex + 1) {
 					//update rows
@@ -59,7 +59,7 @@ public class Consumer extends Thread {
 				int[][] depths = new int[xrange][yrange];
 				for (int x = 0; x < xrange; x = x + 1) {
 	 				for (int y = 0; y < yrange; y = y + 1) {
-						d = julia(jxmin + x * jres, jymin + y * jres, jc, 0);
+						int d = julia(jxmin + x * jres, jymin + y * jres, jc, 0);
 						depths[x][y] = d;
 					}
 				}
