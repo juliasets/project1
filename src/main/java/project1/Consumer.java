@@ -43,19 +43,37 @@ public class Consumer extends Thread {
 			int xrange = (int)Math.ceil((jxmax-jxmin)*jres);
 			int yrange = (int)Math.ceil((jymax-jymin)*jres);
 			int size = xrange*yrange;
-			//job too big
+			//job too big, i.e. too many cells
 			if (size > mlimit && yrange > 1) {
-				//break into subjobs
-				int subs = (int)Math.ceil(yrange/ylimit); //number of new subjobs
-				int lines = (int)Math.floor(yrange/subs); //max number of lines per sub
-				double cap = jymax; //max jymax for subjobs
-				for (int dex = 0; dex < subs; dex = dex + 1) {
-					//update rows
-					jymin = jymin + dex * lines;
-					jymax = jymin + lines > cap ? cap : jymin + lines;
-					//make new job
-					SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
-					drop.put(jnew);
+				//too many lines
+				if (yrange > ylimit) {
+					//break into subjobs
+					int subs = (int)Math.ceil(yrange/ylimit); //number of new subjobs
+					int lines = (int)Math.floor(yrange/subs); //max number of lines per sub
+					double cap = jymax; //max jymax for subjobs
+					for (int dex = 0; dex < subs; dex = dex + 1) {
+						//update rows
+						jymin = jymin + dex * lines;
+						jymax = jymin + lines > cap ? cap : jymin + lines;
+						//make new job
+						SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
+						drop.put(jnew);
+					}
+				}
+				//not too many lines
+				else {
+					//break into subjobs
+					int subs = (int)Math.ceil(size/mlimit); //number of new subjobs
+					int lines = (int)Math.floor(size/subs/xrange); //max number of lines per sub
+					double cap = jymax; //max jymax for subjobs
+					for (int dex = 0; dex < subs; dex = dex + 1) {
+						//update rows
+						jymin = jymin + dex * lines;
+						jymax = jymin + lines > cap ? cap : jymin + lines;
+						//make new job
+						SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
+						drop.put(jnew);
+					}
 				}
 			}
 			else {
