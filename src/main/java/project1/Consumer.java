@@ -18,9 +18,9 @@ public class Consumer extends Thread {
 		if (Math.sqrt(a*a+b*b) > diver || d > 255) {
 			return d;
 		}
-		a = a*a - b*b + c;
-		b = 2*a*b;
-		return julia(a,b,c,d+1);
+		i = a*a - b*b + c;
+		j = 2*a*b;
+		return julia(i,j,c,d+1);
 	}
 
 	public void run() {
@@ -56,7 +56,7 @@ public class Consumer extends Thread {
 			}
 			else {
 				//do job
-				int depths[xrange][yrange];
+				int[][] depths = new int[xrange][yrange];
 				for (int x = 0; x < xrange; x = x + 1) {
 	 				for (int y = 0; y < yrange; y = y + 1) {
 						d = julia(jxmin + x * jres, jymin + y * jres, jc, 0);
