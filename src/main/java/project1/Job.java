@@ -10,7 +10,8 @@ public class Job{
 	private String id;
 	//private String shortid;
 	
-	public Job(c, xmin, xmax, ymin, ymax, resolution)
+	public Job(double c, double xmin, double xmax, double ymin, double ymax, 
+		double resolution)
 	{
 		this.c = c;
 		this.xmin = xmin;
