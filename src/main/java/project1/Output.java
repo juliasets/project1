@@ -31,10 +31,10 @@ public class Output{
 	}
 	
 	
-	public synchronized void insertData(Job j, int[][] data)
+	public void insertData(Job j, int[][] data)
 	{
-		int xOff = (int)Math.ceil((j.getXmin() - xmin)*resolution);
-		int yOff = (int)Math.ceil((j.getYmin() - ymin)*resolution);
+		int xOff = (int)Math.round((j.getXmin() - xmin)*resolution);
+		int yOff = (int)Math.round((j.getYmin() - ymin)*resolution);
 		
 		System.out.println("xOff " + xOff);
 		System.out.println("yOff " + yOff);
@@ -42,13 +42,13 @@ public class Output{
 		if ((xOff < 0) || (yOff < 0))
 			return;
 		
-		int width = (int)Math.ceil((j.getXmax() - j.getXmin())*resolution);
-		int height = (int)Math.ceil((j.getYmax() - j.getYmin())*resolution);
+		int width = (int)Math.round((j.getXmax() - j.getXmin())*resolution);
+		int height = (int)Math.round((j.getYmax() - j.getYmin())*resolution);
 		
 		System.out.println("width " + width);
 		System.out.println("height " + height);
 		
-		if (((xOff + width) > set.length) || ((yOff + width) > set[0].length))
+		if (((xOff + width) > set.length) || ((yOff + height) > set[0].length))
 			return;
 			
 		System.out.println("w " + set.length);
@@ -66,16 +66,31 @@ public class Output{
 			}
 		}
 		
+		boolean hole = false;
+		System.out.println("a");
+		
 		for (int row = 0; row < set.length; row++)
 		{
 			for (int col = 0; col < set[row].length; col++)
 			{
-				full = full || set[row][col];
-				if (full)
+				hole = hole || (!set[row][col]);
+				if (hole)
+				{
+					full = false;
+					System.out.println("hole " + row + " " + col);
 					break;
+				}
 			}
-			if (full)
+			if (hole)
+			{
+				full = false;
 				break;
+			}
+		}
+		System.out.println("b");
+		if (!hole)
+		{
+			full = true;
 		}
 		System.out.println("full " + full);
 		/*if (full)
