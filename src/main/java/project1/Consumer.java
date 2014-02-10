@@ -18,8 +18,8 @@ public class Consumer extends Thread {
 		if (Math.sqrt(a*a+b*b) > diver || d > 255) {
 			return d;
 		}
-		i = a*a - b*b + c;
-		j = 2*a*b;
+		double i = a*a - b*b + c;
+		double j = 2*a*b;
 		return julia(i,j,c,d+1);
 	}
 
@@ -50,7 +50,7 @@ public class Consumer extends Thread {
 					jymin = jymin + dex * lines;
 					jymax = jymin + lines > cap ? cap : jymin + lines;
 					//make new job
-					jnew = Job(jc,jxmin,jxmax,jymin,jymax,jres);
+					Job jnew = new Job(jc,jxmin,jxmax,jymin,jymax,jres);
 					drop.put(jnew);
 				}
 			}
