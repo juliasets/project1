@@ -10,29 +10,22 @@ public class ProducerConsumerTest {
 		shell.setText("Julia");
 		DisplayPixels dp = new DisplayPixels(shell);
 
-		// Updater related
-	    UpdateScreen updater = new UpdateScreen(dp);
-	    updater.start();
 
         Drop d = new Drop();
-        Producer p1 = new Producer(d);
+        Producer p1 = new Producer(d, dp);
         Consumer c1 = new Consumer(d, 1);
+        Consumer c2 = new Consumer(d, 2);
+        Consumer c3 = new Consumer(d, 3);
         p1.start();
         c1.start();
+        c2.start();
+        c3.start();
 
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
-		}
-
-		// Updater related
-		updater.interrupt();
-		try {
-			updater.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 
 		display.dispose();

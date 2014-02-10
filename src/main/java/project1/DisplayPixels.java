@@ -26,8 +26,8 @@ public class DisplayPixels {
 						color.dispose();
 						int left = j * rect.width / data[i].length;
 						int right = (j + 1) * rect.width / data[i].length;
-						int top = i * rect.height / data.length;
-						int bottom = (i + 1) * rect.height / data.length;
+						int top = (data.length - i - 1) * rect.height / data.length;
+						int bottom = (data.length - i) * rect.height / data.length;
 						e.gc.fillRectangle(left, top, right - left, bottom - top);
 					}
 				}

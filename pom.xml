@@ -154,16 +154,16 @@
       <groupId>org.eclipse.swt</groupId>
       <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
       <version>4.2.2</version>
-    </dependency> -->
+    </dependency>
     <dependency>
       <groupId>org.eclipse.swt</groupId>
       <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
       <version>4.2.2</version>
-    </dependency>
-    <!-- <dependency>
+    </dependency> -->
+    <dependency>
       <groupId>org.eclipse.swt</groupId>
       <artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
       <version>4.2.2</version>
-    </dependency> -->
+    </dependency><!--  -->
   </dependencies>
 </project>

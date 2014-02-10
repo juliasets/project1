@@ -18,7 +18,7 @@ public class Consumer extends Thread {
 	}
 	
 	public int julia(double a, double b, double c1, double c2, int d) {
-		if (Math.sqrt(a*a+b*b) > diver || d > 255) {
+		if (Math.sqrt(a*a+b*b) > diver || d >= 255) {
 			return d;
 		}
 		double i = a*a - b*b + c1;
