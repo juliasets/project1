@@ -10,7 +10,7 @@ public class Producer extends Thread {
 	}
 	
 	public void run() {
-		Job j = new Job(-0.4, 0.6, -1, 1, -1, 1, 200);
+		Job j = new Job(-0.4, 0.6, -1, 1, -1, 1, 1000);
 		System.out.println("Producer");
 		drop.put(j);
 		System.out.println("P put job");

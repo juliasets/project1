@@ -6,10 +6,10 @@ public class Consumer extends Thread {
 	private Drop drop;
 	private int number;
 	//limit is nominal limit, limit2 is strict limit
-	private int mlimit = 2500;
-	private int mlimit2 = 2000;
+	private int mlimit = 5000;
+	//private int mlimit2 = 2000;
 	private int ylimit = 250;
-	private int ylimit2 = 200;
+	//private int ylimit2 = 200;
 	private double diver = 2;
 	
 	public Consumer(Drop d, int number) {
@@ -35,7 +35,7 @@ public class Consumer extends Thread {
 		while (j != null)
 		{
 			//check size of job
-			System.out.println("C received job");
+			//System.out.println("C received job");
 			double jc1 = j.getC1();
 			double jc2 = j.getC2();
 			double jxmax = j.getXmax();
@@ -52,29 +52,39 @@ public class Consumer extends Thread {
 				int subs;
 				int lines;
 				//too many lines
-				if (yrange > ylimit) {
+				//System.out.println("a");
+				/*if (yrange > ylimit) {
 					//break into subjobs
+					//System.out.println("ylim");
 					subs = (int)Math.ceil((double)yrange/ylimit2); //number of new subjobs
 					lines = (int)Math.floor(yrange/subs); //max number of lines per sub
 				}
-				//not too many lines
 				else {
 					//break into subjobs
+					//System.out.println("mlim");
 					subs = (int)Math.ceil(size/mlimit2); //number of new subjobs
 					lines = (int)Math.floor(size/subs/xrange); //max number of lines per sub
 				}
-				double cap = jymax; //max jymax for subjobs
-				for (int dex = 0; dex < subs; dex = dex + 1) {
+				System.out.println("resizing " + lines);*/
+				//System.out.println("subs " + subs);
+				/*double cap = jymax; //max jymax for subjobs
+				for (int dex = 0; dex < 4; dex = dex + 1) {
 					//update rows
-					jymax = (jymin + lines / jres) > cap ? cap : (jymin + lines / jres);
+					jymax = (jymin + yrange / jres) > cap ? cap : (jymin + lines / jres);
 					//make new job
 					SubJob jnew = new SubJob(jc1, jc2,jxmin,jxmax,jymin,jymax,jres,jid);
 					drop.put(jnew);
 					jymin = jymax;
-				}
+				}*/
+				
+				SubJob jnew = new SubJob(jc1, jc2, jxmin, jxmax, jymin, jymin + (jymax - jymin)/2, jres, jid);
+				drop.put(jnew);
+				jnew = new SubJob(jc1, jc2, jxmin, jxmax, jymin + (jymax - jymin)/2, jymax, jres, jid);
+				drop.put(jnew);
 			}
 			else {
 				//do job
+				//System.out.println("C doing");
 				int[][] depths = new int[xrange][yrange];
 				for (int x = 0; x < xrange; x = x + 1) {
 	 				for (int y = 0; y < yrange; y = y + 1) {
@@ -86,7 +96,7 @@ public class Consumer extends Thread {
 			}
 			//close job
 			drop.finish(j);
-			System.out.println("C finished job");
+			//System.out.println("C finished job");
 			j =drop.claim();
 		}
 		System.out.println("C exiting");

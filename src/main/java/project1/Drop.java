@@ -22,7 +22,7 @@ public class Drop{
 	
 	public synchronized void put(Job j)
 	{
-		while (this.unclaimed.size() >= 1000) {
+		while (this.unclaimed.size() >= 100000) {
             try { 
                 wait();
             } catch (InterruptedException e) {}
@@ -64,7 +64,7 @@ public class Drop{
             } catch (InterruptedException e) {}
         }
         
-        Job j = unclaimed.remove(0);
+        Job j = unclaimed.remove(unclaimed.size() - 1);
         String id;
         if (j instanceof SubJob)
         {
