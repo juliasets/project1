@@ -5,8 +5,11 @@ import java.lang.Math;
 public class Consumer extends Thread {
 	private Drop drop;
 	private int number;
-	private int mlimit = 2000;
-	private int ylimit = 200;
+	//limit is nominal limit, limit2 is strict limit
+	private int mlimit = 2500;
+	private int mlimit2 = 2000;
+	private int ylimit = 250;
+	private int ylimit2 = 200;
 	private double diver = 2;
 	
 	public Consumer(Drop d, int number) {
@@ -45,35 +48,28 @@ public class Consumer extends Thread {
 			int size = xrange*yrange;
 			//job too big, i.e. too many cells
 			if (size > mlimit && yrange > 1) {
+				int subs;
+				int lines;
 				//too many lines
 				if (yrange > ylimit) {
 					//break into subjobs
-					int subs = (int)Math.ceil(yrange/ylimit); //number of new subjobs
-					int lines = (int)Math.floor(yrange/subs); //max number of lines per sub
-					double cap = jymax; //max jymax for subjobs
-					for (int dex = 0; dex < subs; dex = dex + 1) {
-						//update rows
-						jymin = jymin + dex * lines;
-						jymax = jymin + lines > cap ? cap : jymin + lines;
-						//make new job
-						SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
-						drop.put(jnew);
-					}
+					subs = (int)Math.ceil((double)yrange/ylimit2); //number of new subjobs
+					lines = (int)Math.floor(yrange/subs); //max number of lines per sub
 				}
 				//not too many lines
 				else {
 					//break into subjobs
-					int subs = (int)Math.ceil(size/mlimit); //number of new subjobs
-					int lines = (int)Math.floor(size/subs/xrange); //max number of lines per sub
-					double cap = jymax; //max jymax for subjobs
-					for (int dex = 0; dex < subs; dex = dex + 1) {
-						//update rows
-						jymin = jymin + dex * lines;
-						jymax = jymin + lines > cap ? cap : jymin + lines;
-						//make new job
-						SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
-						drop.put(jnew);
-					}
+					subs = (int)Math.ceil(size/mlimit2); //number of new subjobs
+					lines = (int)Math.floor(size/subs/xrange); //max number of lines per sub
+				}
+				double cap = jymax; //max jymax for subjobs
+				for (int dex = 0; dex < subs; dex = dex + 1) {
+					//update rows
+					jymax = (jymin + lines / jres) > cap ? cap : (jymin + lines / jres);
+					//make new job
+					SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
+					drop.put(jnew);
+					jymin = jymax;
 				}
 			}
 			else {
