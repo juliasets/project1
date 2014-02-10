@@ -4,7 +4,6 @@ import java.lang.Math;
 
 public class Consumer extends Thread {
 	private Drop drop;
-	private int number;
 	//limit is nominal limit, limit2 is strict limit
 	private int mlimit = 5000;
 	//private int mlimit2 = 2000;
@@ -12,9 +11,8 @@ public class Consumer extends Thread {
 	//private int ylimit2 = 200;
 	private double diver = 2;
 	
-	public Consumer(Drop d, int number) {
+	public Consumer(Drop d) {
 		drop = d;
-		this.number = number;
 	}
 	
 	public int julia(double a, double b, double c1, double c2, int d) {
@@ -44,11 +42,11 @@ public class Consumer extends Thread {
 			double jymin = j.getYmin();
 			double jres = j.getRes();
 			String jid = j.getId();
-			int xrange = (int)Math.ceil((jxmax-jxmin)*jres);
-			int yrange = (int)Math.ceil((jymax-jymin)*jres);
+			int xrange = (int)Math.ceil((jxmax-jxmin)*jres) + 1;
+			int yrange = (int)Math.ceil((jymax-jymin)*jres) + 1;
 			int size = xrange*yrange;
 			//job too big, i.e. too many cells
-			if (size > mlimit && yrange > 1) {
+			if (size > mlimit && yrange > 10) {
 				int subs;
 				int lines;
 				//too many lines
@@ -77,9 +75,11 @@ public class Consumer extends Thread {
 					jymin = jymax;
 				}*/
 				
-				SubJob jnew = new SubJob(jc1, jc2, jxmin, jxmax, jymin, jymin + (jymax - jymin)/2, jres, jid);
+				double middle = Math.ceil((jymin + (jymax - jymin)/2)*jres);
+				
+				SubJob jnew = new SubJob(jc1, jc2, jxmin, jxmax, jymin, (middle + 1)/jres, jres, jid);
 				drop.put(jnew);
-				jnew = new SubJob(jc1, jc2, jxmin, jxmax, jymin + (jymax - jymin)/2, jymax, jres, jid);
+				jnew = new SubJob(jc1, jc2, jxmin, jxmax, (middle - 1)/jres, jymax, jres, jid);
 				drop.put(jnew);
 			}
 			else {

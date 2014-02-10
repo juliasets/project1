@@ -57,7 +57,7 @@ public class Drop{
 		            }
 		            if (claimed.isEmpty())
 		            {
-				        wait(2000);
+				        wait(10000);
 				        return null;
 		            }
                 }
@@ -65,6 +65,7 @@ public class Drop{
         }
         
         Job j = unclaimed.remove(unclaimed.size() - 1);
+        
         String id;
         if (j instanceof SubJob)
         {
