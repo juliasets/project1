@@ -1,13 +1,13 @@
 package project1;
 
-import java.util.Dictionary;
+import java.util.*;
 
 public class Drop{
-	private List unclaimed;
+	private ArrayList<Job> unclaimed;
 	
-	private Dictionary<K, V> claimed;
+	private Hashtable<String, Job> claimed;
 	
-	private Dictionary outputs;
+	private Hashtable<String, Output> outputs;
 	
 	//private int nProducers;
 	
@@ -48,13 +48,13 @@ public class Drop{
                 wait(1000);
                 if (!claimed.isEmpty())
                 {
-                	Set<String> keys = claimed.keySet();
-                	int ind = ThreadLocalRandom.current().nextInt(0, keys.size());
-                	String key = keys[ind];
+                	Enumeration<String> keys = claimed.keys();
+                	//int ind = ThreadLocalRandom.current() .nextInt(0, keys.size());
+                	String key = keys.nextElement();
                 	return claimed.get(key);
                 }
                 wait(1000);
-                return NULL;
+                return null;
             } catch (InterruptedException e) {}
         }
         
@@ -91,7 +91,7 @@ public class Drop{
 	public synchronized void putData(Job j, int[][] data)
 	{
 		Output out = outputs.get(j.getId());
-		if (out == NULL)
+		if (out == null)
 			return;
 		
 		out.insertData(j, data);
@@ -100,8 +100,8 @@ public class Drop{
 	public synchronized int[][] getData(Job j)
 	{
 		Output out = outputs.get(j.getId());
-		if (out == NULL)
-			return;
+		if (out == null)
+			return null;
 			
 		while (!(out.isFull())) {
             try { 

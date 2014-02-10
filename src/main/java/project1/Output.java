@@ -1,5 +1,7 @@
 package project1;
 
+import java.util.*;
+
 public class Output{
 	private int[][] data;
 	
@@ -14,14 +16,14 @@ public class Output{
 	
 	public Output(Job j)
 	{
-		xmin = j.getXmin;
-		xmax = j.getXmax;
-		ymin = j.getYmin;
-		ymax = j.getYmax;
-		resolution = j.getRes;
+		xmin = j.getXmin();
+		xmax = j.getXmax();
+		ymin = j.getYmin();
+		ymax = j.getYmax();
+		resolution = j.getRes();
 		
-		int width = Math.ceil((xmax - xmin)*resolution);
-		int height = Math.ceil((ymax - ymin)*resolution);
+		int width = (int)Math.ceil((xmax - xmin)*resolution);
+		int height = (int)Math.ceil((ymax - ymin)*resolution);
 		data = new int[width][height];
 		set = new boolean[width][height];
 		
@@ -31,14 +33,14 @@ public class Output{
 	
 	public void insertData(Job j, int[][] data)
 	{
-		int xOff = Math.ceil((j.getXmin - xmin)*resolution);
-		int yOff = Math.ceil((j.getYmin - ymin)*resolution);
+		int xOff = (int)Math.ceil((j.getXmin() - xmin)*resolution);
+		int yOff = (int)Math.ceil((j.getYmin() - ymin)*resolution);
 		
 		if ((xOff < 0) || (yOff < 0))
 			return;
 		
-		int width = Math.ceil((j.getXmax - j.getXmin)*resolution);
-		int height = Math.ceil((j.getYmax - j.getYmin)*resolution);
+		int width = (int)Math.ceil((j.getXmax() - j.getXmin())*resolution);
+		int height = (int)Math.ceil((j.getYmax() - j.getYmin())*resolution);
 		
 		if (((xOff + width) > set.length) || ((yOff + width) > set[0].length))
 			return;
