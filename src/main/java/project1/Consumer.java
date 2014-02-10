@@ -17,13 +17,13 @@ public class Consumer extends Thread {
 		this.number = number;
 	}
 	
-	public int julia(double a, double b, double c, int d) {
+	public int julia(double a, double b, double c1, double c2, int d) {
 		if (Math.sqrt(a*a+b*b) > diver || d > 255) {
 			return d;
 		}
-		double i = a*a - b*b + c;
-		double j = 2*a*b;
-		return julia(i,j,c,d+1);
+		double i = a*a - b*b + c1;
+		double j = 2*a*b + c2;
+		return julia(i,j,c1, c2,d+1);
 	}
 
 	public void run() {
@@ -36,7 +36,8 @@ public class Consumer extends Thread {
 		{
 			//check size of job
 			System.out.println("C received job");
-			double jc = j.getC();
+			double jc1 = j.getC1();
+			double jc2 = j.getC2();
 			double jxmax = j.getXmax();
 			double jxmin = j.getXmin();
 			double jymax = j.getYmax();
@@ -67,7 +68,7 @@ public class Consumer extends Thread {
 					//update rows
 					jymax = (jymin + lines / jres) > cap ? cap : (jymin + lines / jres);
 					//make new job
-					SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
+					SubJob jnew = new SubJob(jc1, jc2,jxmin,jxmax,jymin,jymax,jres,jid);
 					drop.put(jnew);
 					jymin = jymax;
 				}
@@ -77,7 +78,7 @@ public class Consumer extends Thread {
 				int[][] depths = new int[xrange][yrange];
 				for (int x = 0; x < xrange; x = x + 1) {
 	 				for (int y = 0; y < yrange; y = y + 1) {
-						int d = julia(jxmin + x * jres, jymin + y * jres, jc, 0);
+						int d = julia(jxmin + x / jres, jymin + y / jres, jc1, jc2, 0);
 						depths[x][y] = d;
 					}
 				}
