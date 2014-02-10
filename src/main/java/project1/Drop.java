@@ -43,18 +43,24 @@ public class Drop{
 	
 	public synchronized Job claim()
 	{
-		while ((this.unclaimed.size() == 0)&&(!claimed.isEmpty())) {
+		while (this.unclaimed.size() == 0) {
             try { 
                 wait(1000);
-                if (!claimed.isEmpty())
+                if (this.unclaimed.size() == 0)
                 {
-                	Enumeration<String> keys = claimed.keys();
-                	//int ind = ThreadLocalRandom.current() .nextInt(0, keys.size());
-                	String key = keys.nextElement();
-                	return claimed.get(key);
+		            if (!claimed.isEmpty())
+		            {
+		            	Enumeration<String> keys = claimed.keys();
+		            	//int ind = ThreadLocalRandom.current() .nextInt(0, keys.size());
+		            	String key = keys.nextElement();
+		            	return claimed.get(key);
+		            }
+		            if (claimed.isEmpty())
+		            {
+				        wait(2000);
+				        return null;
+		            }
                 }
-                wait(1000);
-                return null;
             } catch (InterruptedException e) {}
         }
         

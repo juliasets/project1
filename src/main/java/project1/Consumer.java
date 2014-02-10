@@ -26,10 +26,13 @@ public class Consumer extends Thread {
 	public void run() {
 		//only handles single job
 		//need to loop and check if claimed and unclaimed empty before closing thread
-		Job j;
-		while ((j=drop.claim())!= null)
+		Job j =drop.claim();
+		System.out.println("Consumer");
+		System.out.println(j == null);
+		while (j != null)
 		{
 			//check size of job
+			System.out.println("C received job");
 			double jc = j.getC();
 			double jxmax = j.getXmax();
 			double jxmin = j.getXmin();
@@ -38,7 +41,7 @@ public class Consumer extends Thread {
 			double jres = j.getRes();
 			String jid = j.getId();
 			int xrange = (int)Math.ceil((jxmax-jxmin)*jres);
-			int yrange = (int)Math.ceil(jymax-jymin*jres);
+			int yrange = (int)Math.ceil((jymax-jymin)*jres);
 			int size = xrange*yrange;
 			//job too big
 			if (size > mlimit && yrange > 1) {
@@ -68,6 +71,9 @@ public class Consumer extends Thread {
 			}
 			//close job
 			drop.finish(j);
+			System.out.println("C finished job");
+			j =drop.claim();
 		}
+		System.out.println("C exiting");
 	}
 }
