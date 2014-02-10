@@ -77,8 +77,9 @@ public class Output{
 			if (full)
 				break;
 		}
-		if (full)
-			notifyAll();
+		System.out.println("full " + full);
+		/*if (full)
+			notifyAll();*/
 	}
 	
 	public boolean isFull()
