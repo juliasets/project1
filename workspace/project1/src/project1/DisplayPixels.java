@@ -1,7 +1,5 @@
 package project1;
 
-import java.util.Random;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
@@ -11,20 +9,15 @@ import org.eclipse.swt.widgets.*;
 public class DisplayPixels {
 
 	private int[][] data;
+	private Canvas canvas;
 
 	public DisplayPixels (Shell shell) {
-		Random rand = new Random();
-		data = new int[10][20];
-		for (int i = 0; i < data.length; ++i) {
-			for (int j = 0; j < data[i].length; ++j) {
-				data[i][j] = rand.nextInt(256);
-			}
-		}
-
+		data = new int[1][1];
+		data[0][0] = 0;
 		shell.setLayout(new FillLayout());
-		Canvas canvas = new Canvas(shell, SWT.NONE);
+		canvas = new Canvas(shell, SWT.NONE);
 		canvas.addPaintListener(new PaintListener(){
-			public void paintControl (PaintEvent e) {
+			public synchronized void paintControl (PaintEvent e) {
 				Rectangle rect = ((Canvas) e.widget).getBounds();
 				for (int i = 0; i < data.length; ++i) {
 					for (int j = 0; j < data[i].length; ++j) {
@@ -40,6 +33,16 @@ public class DisplayPixels {
 				}
 			}
 		});
+	}
+
+	public synchronized void updatePixels (int[][] newdata) {
+		data = newdata;
+		Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+            	canvas.redraw();
+            	canvas.update();
+            }
+         });
 	}
 
 }
