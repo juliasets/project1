@@ -101,6 +101,7 @@ public class Drop{
 			return;
 		
 		out.insertData(j, data);
+		notifyAll();
 	}
 	
 	public synchronized int[][] getData(Job j)
