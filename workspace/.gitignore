@@ -12,4 +12,5 @@
 org.eclipse.*
 
 # ignore bin directories
-bin/*
+bin/
+

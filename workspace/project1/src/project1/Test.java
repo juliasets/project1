@@ -8,12 +8,19 @@ public class Test {
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		shell.setText("Julia");
-		new DisplayPixels(shell);
+	    UpdateScreen updater = new UpdateScreen(new DisplayPixels(shell));
+	    updater.start();
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
+		}
+		updater.interrupt();
+		try {
+			updater.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		display.dispose();
 	}
