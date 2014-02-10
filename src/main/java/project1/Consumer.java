@@ -36,6 +36,7 @@ public class Consumer extends Thread {
 			double jymax = j.getYmax();
 			double jymin = j.getYmin();
 			double jres = j.getRes();
+			String jid = j.getId();
 			int xrange = (int)Math.ceil((jxmax-jxmin)*jres);
 			int yrange = (int)Math.ceil(jymax-jymin*jres);
 			int size = xrange*yrange;
@@ -50,7 +51,7 @@ public class Consumer extends Thread {
 					jymin = jymin + dex * lines;
 					jymax = jymin + lines > cap ? cap : jymin + lines;
 					//make new job
-					Job jnew = new Job(jc,jxmin,jxmax,jymin,jymax,jres);
+					SubJob jnew = new SubJob(jc,jxmin,jxmax,jymin,jymax,jres,jid);
 					drop.put(jnew);
 				}
 			}
