@@ -1,13 +1,15 @@
 package project1;
 
+import java.util.Dictionary;
+
 public class Drop{
 	private List unclaimed;
 	
-	private Dictionary claimed;
+	private Dictionary<K, V> claimed;
 	
 	private Dictionary outputs;
 	
-	private int nProducers;
+	//private int nProducers;
 	
 	public Drop()
 	{
@@ -41,9 +43,18 @@ public class Drop{
 	
 	public synchronized Job claim()
 	{
-		while (this.unclaimed.size() == 0) {
+		while ((this.unclaimed.size() == 0)&&(!claimed.isEmpty())) {
             try { 
-                wait();
+                wait(1000);
+                if (!claimed.isEmpty())
+                {
+                	Set<String> keys = claimed.keySet();
+                	int ind = ThreadLocalRandom.current().nextInt(0, keys.size());
+                	String key = keys[ind];
+                	return claimed.get(key);
+                }
+                wait(1000);
+                return NULL;
             } catch (InterruptedException e) {}
         }
         
@@ -104,8 +115,8 @@ public class Drop{
 		return data;
 	}
 	
-	public synchronized register()
+	/*public synchronized register()
 	{
 		nProducers++;
-	}
+	}*/
 }
