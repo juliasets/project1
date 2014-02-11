@@ -45,7 +45,7 @@ public class Drop{
 	{
 		while (this.unclaimed.size() == 0) {
             try { 
-                wait(1000);
+                wait(10000);
                 if (this.unclaimed.size() == 0)
                 {
 		            if (!claimed.isEmpty())
