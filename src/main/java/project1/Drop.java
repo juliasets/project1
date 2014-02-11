@@ -57,8 +57,9 @@ public class Drop{
 		            }
 		            if (claimed.isEmpty())
 		            {
-				        wait(10000);
-				        return null;
+				        wait(20000);
+				        if ((this.unclaimed.size() == 0) && claimed.isEmpty())
+				            return null;
 		            }
                 }
             } catch (InterruptedException e) {}

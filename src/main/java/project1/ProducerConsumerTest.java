@@ -1,5 +1,7 @@
 package project1;
 
+import java.util.*;
+
 import org.eclipse.swt.widgets.*;
 
 public class ProducerConsumerTest {
@@ -13,7 +15,7 @@ public class ProducerConsumerTest {
         Drop d = new Drop();
         Producer p1 = new Producer(d, dp);
         int cores = Runtime.getRuntime().availableProcessors();
-        ArrayList<Consumer> consumers;
+        ArrayList<Consumer> consumers = new ArrayList<Consumer>();
         for (int i = 0; i < cores; ++i) { // All but one core for the producer.
             Consumer c = new Consumer(d);
             consumers.add(c);
